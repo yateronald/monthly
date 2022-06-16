@@ -1,11 +1,13 @@
-#ifndef _MONTY_H_
-#define _MONTY_H_
+#ifndef _MONTY_H
+#define _MONTY_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+/* Libraries */
 #include <ctype.h>
-extern int n;
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -36,60 +38,43 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/* error_handler functions */
-void error_arguments(void);
-void open_error(char **);
-void invalidInstruction_error(char *invInstruction, unsigned int line);
-void not_int_err(unsigned int line);
-void malloc_error(void);
+/**
+ * struct instance_s - data instance
+ * @line: the readed line
+ * @args: the arguments
+ * @line_number: line number
+ * @fp: the file
+ * @filename: filename
+ * Description: data instance, line, args
+ */
+typedef struct instance_s
+{
+	char *line;
+	char **args;
+	char *filename;
+	int line_number;
+	FILE *fp;
+} data_t;
 
-/* error handler 2 */
-void pint_error(unsigned int line);
-void pop_error(unsigned int line);
-void swap_error(unsigned int line);
-void add_error(unsigned int line);
-void sub_error(unsigned int line);
+extern data_t data;
 
-/* error_handler3 */
-void div_error(unsigned int line);
-void div_error2(unsigned int line);
-void mul_error(unsigned int line);
-void mod_error(unsigned int line);
-/*error handler4*/
-void pchar_error(unsigned int line);
-void pchar_error2(unsigned int line);
-
-/* executer functions*/
-void open_and_read(char **argv);
-int is_number(char *token);
-int is_comment(char *token, int line_counter);
-
-/*opcodes */
-void (*get_op_code(char *token, unsigned int line)) (stack_t **, unsigned int);
-
-
-/* Stack */
-void push_stack(stack_t **top, unsigned int line_number);
-void pall_stack(stack_t **top, unsigned int line_number);
-void free_stack(stack_t *top);
-void pint_stack(stack_t **top, unsigned int line_number);
-void pop_stack(stack_t **top, unsigned int line_number);
-
-/* stack operations */
-void _swap(stack_t **top, unsigned int line);
-void _add(stack_t **top, unsigned int line);
-void _sub(stack_t **top, unsigned int line_number);
-void _div(stack_t **top, unsigned int line_number);
-void _mul(stack_t **top, unsigned int line);
-
-/* stack 3 */
-void _mod(stack_t **top, unsigned int line_number);
-void rotl_stack(stack_t **top, unsigned int line_number);
-void rotr_stack(stack_t **top, unsigned int line_number);
-void _nop(stack_t **top, unsigned int line);
-void _pchar(stack_t **top, unsigned int line_number);
-
-/*stack4 */
-void pstr_stack(stack_t **top, unsigned int line_number);
-
-#endif /* _MONTY_H_ */
+/* Prototypes */
+int process_line(stack_t **stack);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+void add_dnodeint(stack_t **stack, unsigned int line_number);
+void push_error(short int err_code);
+void free_data(void);
+void print_dlistint(stack_t **stack, unsigned int line_number);
+void free_dlistint(stack_t *stack);
+int split_line(void);
+void print_top(stack_t **stack, unsigned int line_number);
+void pop_top(stack_t **stack, unsigned int line_number);
+void swap_top(stack_t **stack, unsigned int line_number);
+int _isdigit(char *str);
+void nothing(stack_t **stack, unsigned int line_number);
+void add_top_two(stack_t **stack, unsigned int line_number);
+void sub_top_two(stack_t **stack, unsigned int line_number);
+void div_top_two(stack_t **stack, unsigned int line_number);
+void mul_top_two(stack_t **stack, unsigned int line_number);
+void mod_top_two(stack_t **stack, unsigned int line_number);
+#endif /* _MONTY_H */
